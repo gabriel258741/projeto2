@@ -165,8 +165,8 @@ function aarq(){
 arq=$( dialog						\
 	--stdout					\
 	--title "Apagar arquivo"			\
-	--inputbox "Digite o nome/local do arquivo (sem espaço, caso seja preciso, utilize aspas no nome do arquivo):"				\
-	10 60 )
+	--fselect /					\
+	10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -227,8 +227,8 @@ function adir(){
 arq=$( dialog						\
 	--stdout					\
 	--title "Apagar diretório"			\
-	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
-	10 60 )
+	--fselect /					\
+	10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -277,7 +277,7 @@ function vera(){
 arq=$( dialog						\
 		--stdout				\
 		--title "Mostrar conteúdo de arquivo:"	\
-		--inputbox "Nome/Origem (sem espaço, caso seja preciso, utilize aspas no nome do arquivo):" 10 60 )
+		--fselect / 10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -319,8 +319,8 @@ function edir(){
 arq=$( dialog 						\
 		--stdout				\
 		--title "Entrar no diretório"		\
-		--inputbox "Nome/local do diretório (sem espaço, casos seja preciso, utilize aspas no nome do diretório):"		\
-		10 60 )
+		--fselect / 				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -359,9 +359,9 @@ esac
 function car(){
 origem=$( dialog 					\
 		--stdout				\
-		--title "Copiar arquivo"	\
-		--inputbox "Nome/origem (sem espaço, caso seja preciso, utilize aspas no nome do arquivos):"		\
-		10 60 )
+		--title "Origem"		\
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -369,9 +369,9 @@ esac
 # Caso pressione Calcel ou ESC, voltará ao menu
 destino=$( dialog 					\
 		--stdout				\
-		--title "Copiar arquivo"	\
-		--inputbox "Destino:"			\
-		8 50 )
+		--title "Destino"		\
+		--fselect /			\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -391,9 +391,9 @@ esac
 function cdr(){
 origem=$( dialog 					\
 		--stdout				\
-		--title "Copiar diretório"	\
-		--inputbox "Nome/origem (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"		\
-		10 60 )
+		--title "Origem"			\
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -401,9 +401,9 @@ esac
 # Caso pressione Calcel ou ESC, voltará ao menu
 destino=$( dialog 					\
 		--stdout				\
-		--title "Copiar diretório"	\
-		--inputbox "Destino:"			\
-		8 50 )
+		--title "Destino"			\
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 # Pedirá ao usuário o destino para onde o diretório será copiado, e salvará o nome em sua variável arq
@@ -423,9 +423,9 @@ esac
 function mova(){
 origem=$( dialog 						\
 		--stdout				\
-		--title "Mover arquivo ou diretório"	\
-		--inputbox "Nome/origem (sem espaço, caso seja preciso, utilize aspas no nome do arquivo ou diretório):"		\
-		10 60 )
+		--title "Origem"			\
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -433,9 +433,9 @@ esac
 # Caso pressione Calcel ou ESC, voltará ao menu
 destino=$( dialog 					\
 		--stdout				\
-		--title "Mover arquivo ou diretório"	\
-		--inputbox "Destino:"			\
-		8 50 )
+		--title "Destino"		\
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -486,8 +486,8 @@ function adon(){
 arq=$( dialog						\
 	--stdout					\
 	--title "Alterar dono"				\
-	--inputbox "Digite o nome/local do diretório ou arquivo (sem espaço. caso seja preciso, utilize aspas no nome do arquivo ou diretório):"\
-	10 60 )
+	--fselect /					\
+	10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -550,8 +550,8 @@ function daed(){
 arq=$( dialog 						\
 		--stdout				\
 		--title "Nome do arquivo"		\
-		--inputbox "Nome(Não coloque a extensão .tar no final do arquivo"	\
-		10 60 )
+		--fselect /				\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -573,8 +573,8 @@ function comp(){
 arq=$( dialog							\
 		--stdout					\
 		--title "Compactar arquivo/diretório"		\
-		--inputbox "Nome/local (sem espaço, caso seja preciso, utilize aspas no nome do arquivo ou diretório):"			\
-		10 60 )
+		--fselect /					\
+		10 70 )
 case $? in
 	1|255) menu;;
 esac
@@ -617,13 +617,13 @@ case $arq in
 	1) nome=$( dialog				\
 			--stdout			\
 			--title "Descompactar"		\
-			--inputbox "Nome (não utilize extensão de arquivo):" \
-			10 60 ); gunzip $nome.gz; saida=$?;;
+			--fselect / 			 \
+			10 70 ); gunzip $nome; saida=$?;;
 	2) nome=$( dialog				\
 			--stdout			\
 			--title "Descompactar"		\
-			--inputbox "Nome (não utilizar extensão de arquivo):" \
-			10 60 ); tar -zxvf $nome.tar.gz; saida=$?;;
+			--fselect /			 \
+			10 70 ); tar -zxvf $nome; saida=$?;;
 	3) menu;;
 	*) menu;;
 esac
@@ -645,7 +645,7 @@ function edit(){
 opcao=$( dialog 						\
 		--stdout					\
 		--title "Arquivo/local"				\
-		--inputbox "Nome:" 8 50 )
+		--fselect / 10 70 )
 case $? in
 	1|255) menu;;
 esac

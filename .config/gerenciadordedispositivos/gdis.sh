@@ -4,41 +4,43 @@ OPCAO=$(dialog					\
 	--stdout				\
 	--menu "Gerenciador de dispositivos"	\
 	0 0 0					\
-	1 "Ver data e hora do sistema"		\
-	2 "Alterar data do sistema"		\
-	3 "Alterar hora do sistema"		\
-	4 "Informações da cpu"			\
-	5 "Informações de disco e partições"	\
-	6 "Visualizar modulos carregados"	\
-	7 "Informações do barramento PCI" 	\
-	8 "Utilização de memória RAM"		\
-	9 "Quantidade de INODES disponíveis"	\
-	10 "Versão do Kernel "			\
-	11 "Todas informações do sistema"	\
-	12 "Processos do sistema"		\
-	13 "Processos do sistema de forma hierarquica" \
-	14 "Fechar processos" 			\
-	15 "Arquivos abertos no sistema" \
-	16 "Ver INODE"				\
-	17 "Voltar" )
+	1 "Data e hora do sistema"		\
+	2 "Calendário"				\
+	3 "Alterar data do sistema"		\
+	4 "Alterar hora do sistema"		\
+	5 "Informações da cpu"			\
+	6 "Informações de disco e partições"	\
+	7 "Visualizar modulos carregados"	\
+	8 "Informações do barramento PCI" 	\
+	9 "Utilização de memória RAM"		\
+	10 "Quantidade de INODES disponíveis"	\
+	11 "Versão do Kernel "			\
+	12 "Todas informações do sistema"	\
+	13 "Processos do sistema"		\
+	14 "Processos do sistema de forma hierarquica" \
+	15 "Fechar processos" 			\
+	16 "Arquivos abertos no sistema" \
+	17 "Ver INODE"				\
+	18 "Voltar" )
 case $OPCAO in
 	1) MDAEH ;;
-	2) EDATA ;;
-	3) EHORA ;;
-	4) INFCP ;;
-	5) EXDP ;;
-	6) MODC ;;
-	7) PCI2 ;;
-	8) UTM ;;
-	9) IND ;;
-	10) KERNEL ;;
-	11) ALLINF ;;
-	12) PROCSIS ;;
-	13) PROCSISH ;;
-	14) KILLPROC ;;
-	15) ARQPROC ;;
-	16) VINOD ;;
-	17) bash /Projeto/.config/menu.sh ;;
+	2) CALEN ;;
+	3) EDATA ;;
+	4) EHORA ;;
+	5) INFCP ;;
+	6) EXDP ;;
+	7) MODC ;;
+	8) PCI2 ;;
+	9) UTM ;;
+	10) IND ;;
+	11) KERNEL ;;
+	12) ALLINF ;;
+	13) PROCSIS ;;
+	14) PROCSISH ;;
+	15) KILLPROC ;;
+	16) ARQPROC ;;
+	17) VINOD ;;
+	18) bash /Projeto/.config/menu.sh ;;
 	*) bash /Projeto/.config/menu.sh ;;
 esac
 }
@@ -49,6 +51,12 @@ case $? in
 	0) menu;;
 	1|255) menu;;
 	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+}
+function CALEN(){
+dialog --title "Calendário" --calendar '' 0 0
+case $? in
+	*) menu;;
 esac
 }
 function EDATA(){
@@ -82,19 +90,11 @@ case $? in
 esac
 }
 function EHORA(){
-hora=$( dialog --stdout --inputbox "Hora:" 0 0 )
-case $? in
-	1|255) menu;;
-esac
-minuto=$( dialog --stdout --inputbox "Minutos:" 0 0 )
-case $? in
-	1|255) menu;;
-esac
-segundo=$( dialog --stdout --inputbox "Segundos:" 0 0 )
-case $? in
-	1|255) menu;;
-esac
-date +%T -s "$hora:$minuto:$segundo"
+horas=$(dialog					\
+		--stdout			\
+		--title "Ajustar o relógio"	\
+		--timebox "/nDica: use as setas e o TAB" 0 0 )
+date +%T -s $horas
 date +%T > /tmp/hora.txt
 dialog --textbox /tmp/hora.txt 0 0
 case $? in

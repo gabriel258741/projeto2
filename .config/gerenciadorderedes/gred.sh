@@ -7,26 +7,28 @@ OPCAO=$(dialog					\
 	1 "Visualizar interfaces de rede"	\
 	2 "Subir interface de rede"		\
 	3 "Descer interface de rede"		\
-	4 "Visualizar Endereço IP"		\
-	5 "Alterar endereço IP/Máscara" 	\
-	6 "Alterar hostname"			\
-	7 "Gateway"				\
-	8 "Remover Gateway"			\
-	9 "Adicionar Gateway"			\
-	10 "Testar conexão (ping)"		\
- 	11 "Voltar" )
+	4 "Reiniciar interface de rede"	\
+	5 "Visualizar Endereço IP"		\
+	6 "Alterar endereço IP/Máscara" 	\
+	7 "Alterar hostname"			\
+	8 "Gateway"				\
+	9 "Remover Gateway"			\
+	10 "Adicionar Gateway"			\
+	11 "Testar conexão (ping)"		\
+ 	12 "Voltar" )
 case $OPCAO in
 	1) VINT ;;
 	2) SRED ;;
 	3) DRED ;;
-	4) VIP  ;;
-	5) ATIP ;;
-	6) ATHS ;;
-	7) GTWY ;;
-	8) RTWY ;;
-	9) DTWY ;; 
-	10) PING ;;
-	11) bash /Projeto/.config/menu.sh;;
+	4) REIN ;;
+	5) VIP  ;;
+	6) ATIP ;;
+	7) ATHS ;;
+	8) GTWY ;;
+	9) RTWY ;;
+	10) DTWY ;; 
+	11) PING ;;
+	12) bash /Projeto/.config/menu.sh;;
 	*) bash /Projeto/.config/menu.sh;;
 esac
 # Um menu com algumas opções que permitem o usuário gerenciar sua rede
@@ -101,6 +103,35 @@ esac
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu
 # Assim como os outros retornos
 }
+function REIN(){
+ip addr > /tmp/interface.txt
+# Manda as informações das interfaces de rede para um arquivo temporário
+	dialog                        	  \
+	--title "Interfaces" \
+	--textbox /tmp/interface.txt 0 0
+# Mostra esse arquivo via dialog
+int=$( dialog					\
+		--stdout			\
+		--title "Escolha a interface"	\
+		--inputbox "Interface número:"	\
+		0 0 )
+case $? in
+	1|255) menu;;
+esac
+# Pede para que o usuário digite o número da interface que deseja reiniciar
+# De acordo com as informações vistas anteriormente
+/etc/init.d/networking restart
+# Comando para reiniciar a interface (eth) escolhida pelo usuário
+case $? in
+	0) dialog --msgbox "Reiniciada com sucesso" 0 0; menu;;
+	1) dialog --msgbox "Não foi possivel reiniciar" 0 0; menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+# Caso o retorno seja 0, avisará o usuário que a interface reiniciou com sucesso
+# Caso seja 1, avisará da impossibilidade ao reiniciar
+# Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu
+# Assim como os outros retornos
+
 function VIP(){
 hostname -I > /tmp/ipip.txt
 # Mandará o endereço ip via comando para um arquivo temporário

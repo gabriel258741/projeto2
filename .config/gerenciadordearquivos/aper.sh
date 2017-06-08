@@ -3,8 +3,8 @@ function menu(){
 arq=$( dialog						\
 	--stdout					\
 	--title "Alterar permissão"			\
-	--inputbox "Digite o nome do diretório/arquivo (sem espaço, caso seja preciso, utilize aspas no nome do arquivo ou diretório):"\
-	10 60 )
+	--fselect /					\
+	10 70 )
 case $? in
 	1|255) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 esac
